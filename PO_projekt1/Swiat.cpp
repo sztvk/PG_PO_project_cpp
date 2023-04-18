@@ -16,17 +16,16 @@
 
 #include "Czlowiek.h"
 
-Swiat::Swiat() : szerokosc(20), wysokosc(20), numerTury(0)
+Swiat::Swiat() : szerokosc(20), wysokosc(20), numerTury(0), liczbaZdarzen(0)
 {
 }
 
-Swiat::Swiat(int szerokosc, int wysokosc) : szerokosc(szerokosc), wysokosc(wysokosc), numerTury(0)
+Swiat::Swiat(int szerokosc, int wysokosc) : szerokosc(szerokosc), wysokosc(wysokosc), numerTury(0), liczbaZdarzen(0)
 {
 	for (int x = 0; x < szerokosc; x++)
 	{
 		polaNaPlanszy.push_back(std::vector<Organizm*>());
-		for (int y = 0; y < wysokosc; y++)
-			polaNaPlanszy[x].push_back(nullptr);
+		for (int y = 0; y < wysokosc; y++) polaNaPlanszy[x].push_back(nullptr);
 	}
 }
 
@@ -57,14 +56,16 @@ void Swiat::przebiegGry()
 }
 
 void Swiat::wykonajTure()
-{
-	numerTury++;
+{	
+	posortujOrganizmy();
 	for (int index = 0; index < organizmy.size(); index++)
 	{
-		organizmy[index]->akcja();
 		organizmy[index]->postarzOrganizm();
+		//std::cout << organizmy[index]->getReprezentacjaZnakowa() << std::endl;
+		organizmy[index]->akcja();
+		
 	}
-	posortujOrganizmy();
+	numerTury++;
 }
 
 void Swiat::rysujSwiat()
@@ -81,7 +82,7 @@ void Swiat::rysujSwiat()
 		for (int x = 0; x < szerokosc; x++)
 		{
 			std::cout << ' ';
-			if (polaNaPlanszy[x][y] == NULL) std::cout << "*";
+			if (polaNaPlanszy[x][y] == NULL) std::cout << " ";
 			else polaNaPlanszy[x][y]->rysowanie();
 		}
 		std::cout << '|';
@@ -90,6 +91,10 @@ void Swiat::rysujSwiat()
 
 	for (int x = 0; x < 2 * szerokosc + 2; x++) std::cout << '-';
 	std::cout << std::endl;
+
+	for (int i = 0; i < zdarzenia.size(); i++) std::cout << zdarzenia[i];
+
+	zdarzenia.erase(zdarzenia.begin(), zdarzenia.end());
 }
 
 void Swiat::handleInput(int input)
@@ -119,7 +124,7 @@ void Swiat::dodajPoczatkoweOrganizmy()
 {
 	Antylopa* antylopa = new Antylopa(1, 1);
 	dodajOrganizmDoStruktur(antylopa);
-	/*BarszczSosnowskiego* barszczSosnowskiego = new BarszczSosnowskiego(2, 2);
+	BarszczSosnowskiego* barszczSosnowskiego = new BarszczSosnowskiego(2, 2);
 	dodajOrganizmDoStruktur(barszczSosnowskiego);
 	Guarana* guarana = new Guarana(3, 3);
 	dodajOrganizmDoStruktur(guarana);
@@ -136,7 +141,7 @@ void Swiat::dodajPoczatkoweOrganizmy()
 	Wilk* wilk = new Wilk(9, 9);
 	dodajOrganizmDoStruktur(wilk);
 	Zolw* zolw = new Zolw(10, 10);
-	dodajOrganizmDoStruktur(zolw);*/
+	dodajOrganizmDoStruktur(zolw);
 
 	Czlowiek* czlowiek = new Czlowiek(0, 0);
 	dodajOrganizmDoStruktur(czlowiek);
@@ -186,10 +191,22 @@ void Swiat::posortujOrganizmy()
 
 void Swiat::przeniesOrganizm(Organizm* organizmDoPrzeniesienia, int staraPozycjaX, int staraPozycjaY, int nowaPozycjaX, int nowaPozycjaY)
 {
+	raportujRuch(organizmDoPrzeniesienia);
 	organizmDoPrzeniesienia->setPolozenie(nowaPozycjaX, nowaPozycjaY);
 	polaNaPlanszy[nowaPozycjaX][nowaPozycjaY] = organizmDoPrzeniesienia;
 	polaNaPlanszy[staraPozycjaX][staraPozycjaY] = nullptr;
 }
+
+
+void Swiat::raportujRuch(Organizm* organizm)
+{
+	if (organizm != nullptr)
+	{
+		std::string noweZdarzenie = organizm->getNazwa() + " wykonal ruch.\n";
+		zdarzenia.push_back(noweZdarzenie);
+	}
+}
+
 
 std::vector<Organizm*> Swiat::getOrganizmy()
 {

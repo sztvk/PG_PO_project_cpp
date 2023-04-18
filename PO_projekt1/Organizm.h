@@ -23,6 +23,7 @@ public:
 	int* getPolozenie();
 	int getWiek();
 	int getSila();
+	virtual std::string getNazwa() = 0;
 
 	void setSwiat(Swiat* swiat);
 	void setPolozenie(int nowaPozycjaX, int nowaPozycjaY);

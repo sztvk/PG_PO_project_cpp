@@ -1,2 +1,19 @@
-﻿  Zwierze.cpp
-  PO_projekt1.vcxproj -> C:\Users\sztvk\Desktop\infa2022\PO_projekt1\x64\Debug\PO_projekt1.exe
+﻿  Antylopa.cpp
+  BarszczSosnowskiego.cpp
+  Czlowiek.cpp
+  Guarana.cpp
+  Lis.cpp
+  Mlecz.cpp
+  Organizm.cpp
+  Owca.cpp
+  PO_projekt1.cpp
+C:\Users\sztvk\Desktop\infa2022\OOP-project1-cpp\PO_projekt1\PO_projekt1.cpp(6,25): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+  Roslina.cpp
+  Swiat.cpp
+  Trawa.cpp
+  WilczeJagody.cpp
+  Wilk.cpp
+  Zolw.cpp
+  Zwierze.cpp
+  Generowanie kodu...
+  PO_projekt1.vcxproj -> C:\Users\sztvk\Desktop\infa2022\OOP-project1-cpp\x64\Debug\PO_projekt1.exe

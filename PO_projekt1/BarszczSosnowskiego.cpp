@@ -8,6 +8,11 @@ BarszczSosnowskiego::BarszczSosnowskiego(int pozycjaX, int pozycjaY) : Roslina(1
 {
 }
 
+std::string BarszczSosnowskiego::getNazwa()
+{
+    return "Barszcz sosnowskiego";
+}
+
 BarszczSosnowskiego::~BarszczSosnowskiego()
 {
 }

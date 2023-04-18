@@ -5,7 +5,10 @@ class Zolw : public Zwierze
 public:
 	Zolw();
 	Zolw(int pozycjaX, int pozycjaY);
-	~Zolw();
 
+	std::string getNazwa() override;
+	void akcja() override;
+
+	~Zolw();
 };
 

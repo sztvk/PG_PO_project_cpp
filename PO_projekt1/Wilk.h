@@ -5,6 +5,9 @@ class Wilk : public Zwierze
 public:
 	Wilk();
 	Wilk(int pozycjaX, int pozycjaY);
+
+	std::string getNazwa() override;
+
 	~Wilk();
 };
 

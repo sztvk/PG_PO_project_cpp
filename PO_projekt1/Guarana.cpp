@@ -8,6 +8,11 @@ Guarana::Guarana(int pozycjaX, int pozycjaY) : Roslina(0, 0, pozycjaX, pozycjaY,
 {
 }
 
+std::string Guarana::getNazwa()
+{
+    return "Guarana";
+}
+
 Guarana::~Guarana()
 {
 }

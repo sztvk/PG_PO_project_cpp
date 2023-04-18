@@ -8,14 +8,20 @@ Lis::Lis(int pozycjaX, int pozycjaY) : Zwierze(3, 7, pozycjaX, pozycjaY, 'L')
 {
 }
 
+std::string Lis::getNazwa()
+{
+	return "Lis";
+}
+
 void Lis::akcja()
 {
 	int pozycjaX, pozycjaY;
 	pozycjaX = getPolozenie()[0];
 	pozycjaY = getPolozenie()[1];
+	int zmianaX = 0;
+	int zmianaY = 0;
 
-	int zmianaX = std::rand() % 3 - 1;
-	int zmianaY = std::rand() % 3 - 1;
+	wylosujPozycje(&zmianaX, &zmianaY);
 
 	int nowaPozycjaX = pozycjaX + zmianaX;
 	int nowaPozycjaY = pozycjaY + zmianaY;
@@ -30,9 +36,12 @@ void Lis::akcja()
 			{
 				swiat->przeniesOrganizm(this, pozycjaX, pozycjaY, nowaPozycjaX, nowaPozycjaY);
 			}
-			else if (swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]->getSila() > getSila())
+			else if (swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]->getSila() < getSila())
 			{
-				// ponowna proba ruchu 
+				kolizja(swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]);
+			}
+			else if (swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]->getSila() >= getSila())
+			{
 				akcja();
 			}
 		}

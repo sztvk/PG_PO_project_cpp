@@ -14,9 +14,10 @@ void Zwierze::akcja()
 	int pozycjaX, pozycjaY;
 	pozycjaX = getPolozenie()[0];
 	pozycjaY = getPolozenie()[1];
-
-	int zmianaX = std::rand() % 3 - 1;
-	int zmianaY = std::rand() % 3 - 1;
+	int zmianaX = 0;
+	int zmianaY = 0;
+	
+	wylosujPozycje(&zmianaX, &zmianaY);
 
 	int nowaPozycjaX = pozycjaX + zmianaX;
 	int nowaPozycjaY = pozycjaY + zmianaY;
@@ -31,7 +32,7 @@ void Zwierze::akcja()
 			{
 				swiat->przeniesOrganizm(this, pozycjaX, pozycjaY, nowaPozycjaX, nowaPozycjaY);
 			}
-			else
+			else if(nowaPozycjaX != pozycjaX && nowaPozycjaY != pozycjaY)
 			{
 				kolizja(swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]);
 			}
@@ -42,18 +43,31 @@ void Zwierze::akcja()
 void Zwierze::kolizja(Organizm* organizmAtakowany)
 {
 	Swiat* swiat = getSwiat();
-	if (getSila() > organizmAtakowany->getSila() || getSila() == organizmAtakowany->getSila())
-	{
-		//setPolozenie(organizmAtakowany->getPolozenie()[0], organizmAtakowany->getPolozenie()[1]);
-		swiat->przeniesOrganizm(this, getPolozenie()[0], getPolozenie()[1], organizmAtakowany->getPolozenie()[0], organizmAtakowany->getPolozenie()[1]);
+
+	int organizmAtakowanyX = organizmAtakowany->getPolozenie()[0];
+	int organizmAtakowanyY = organizmAtakowany->getPolozenie()[1];
+	int organizmAtakujacyX = getPolozenie()[0];
+	int organizmAtakujacyY = getPolozenie()[1];
+
+	if (getSila() >= organizmAtakowany->getSila())
+	{	
 		swiat->usunOrganizm(organizmAtakowany);
+		if(dynamic_cast<Zwierze*>(this)) swiat->przeniesOrganizm(this, organizmAtakujacyX, organizmAtakujacyY, organizmAtakowanyX, organizmAtakowanyY);
 	}
 	else if (getSila() < organizmAtakowany->getSila())
 	{
-		//organizmAtakowany->setPolozenie(getPolozenie()[0], getPolozenie()[1]);
-		swiat->przeniesOrganizm(organizmAtakowany, organizmAtakowany->getPolozenie()[0], organizmAtakowany->getPolozenie()[1], getPolozenie()[0], getPolozenie()[1]);
 		swiat->usunOrganizm(this);
+		if (dynamic_cast<Zwierze*>(organizmAtakowany)) swiat->przeniesOrganizm(organizmAtakowany, organizmAtakowanyX, organizmAtakowanyY, organizmAtakujacyX, organizmAtakujacyY);
 	}
+}
+
+void Zwierze::wylosujPozycje(int* zmianaX, int* zmianaY)
+{
+	do
+	{
+		*zmianaX = std::rand() % 3 - 1;
+		*zmianaY = std::rand() % 3 - 1;
+	} while (*zmianaX == 0 && *zmianaY == 0);
 }
 
 Zwierze::~Zwierze()

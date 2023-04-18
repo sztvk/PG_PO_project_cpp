@@ -8,6 +8,11 @@ Czlowiek::Czlowiek(int pozycjaX, int pozycjaY) : Zwierze(5, 4, pozycjaX, pozycja
 {
 }
 
+std::string Czlowiek::getNazwa()
+{
+	return "Czlowiek";
+}
+
 void Czlowiek::akcja()
 {
 	Swiat* obecnySwiat = getSwiat();
@@ -18,10 +23,10 @@ void Czlowiek::akcja()
 	int nowaPozycjaX = staraPozycjaX;
 	int nowaPozycjaY = staraPozycjaY;
 
-	if (ostatniRuch == GORA) nowaPozycjaY = staraPozycjaY - 1;
-	else if (ostatniRuch == DOL) nowaPozycjaY = staraPozycjaY + 1;
-	else if (ostatniRuch == LEWO) nowaPozycjaX = staraPozycjaX - 1;
-	else if (ostatniRuch == PRAWO) nowaPozycjaX = staraPozycjaX + 1;
+	if (ostatniRuch == GORA) nowaPozycjaY--;
+	else if (ostatniRuch == DOL) nowaPozycjaY++;
+	else if (ostatniRuch == LEWO) nowaPozycjaX--;
+	else if (ostatniRuch == PRAWO) nowaPozycjaX++;
 
 	if (nowaPozycjaX >= 0 && nowaPozycjaX < obecnySwiat->getSzerokosc())
 	{

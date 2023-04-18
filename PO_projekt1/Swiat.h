@@ -20,7 +20,12 @@ private:
 
 	std::vector<Organizm*> organizmy;
 
+	void raportujRuch(Organizm* organizm);
+
 public:
+	int liczbaZdarzen;
+	std::vector<std::string> zdarzenia;
+
 	std::vector< std::vector< Organizm* >> polaNaPlanszy;
 
 	Swiat();
@@ -45,6 +50,8 @@ public:
 	void posortujOrganizmy();
 
 	void przeniesOrganizm(Organizm* organizmDoPrzeniesienia, int staraPozycjaX, int staraPozycjaY, int nowaPozycjaX, int nowaPozycjaY);
+
+	//void raportujRuch(Organizm* organizm);
 
 	std::vector<Organizm*> getOrganizmy();
 

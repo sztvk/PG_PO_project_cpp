@@ -14,6 +14,8 @@ public:
 	Czlowiek();
 	Czlowiek(int pozycjaX, int pozycjaY);
 
+	std::string getNazwa() override;
+
 	void akcja() override;
 	void setKierunekRuchu(KierunekRuchuCzlowieka nowyKierunekRuchu);
 
