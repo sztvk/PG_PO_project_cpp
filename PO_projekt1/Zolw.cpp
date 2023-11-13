@@ -1,11 +1,12 @@
 #include "Zolw.h"
 
-Zolw::Zolw()
+Zolw::Zolw(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) : Zwierze(obecnySwiat, 2, 1, pozycjaX, pozycjaY, 'Z')
 {
 }
 
-Zolw::Zolw(int pozycjaX, int pozycjaY) : Zwierze(2, 1, pozycjaX, pozycjaY, 'Z')
+Zwierze* Zolw::zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY)
 {
+	return new Zolw(obecnySwiat, pozycjaX, pozycjaY);
 }
 
 std::string Zolw::getNazwa()
@@ -19,6 +20,12 @@ void Zolw::akcja()
 	{
 		Zwierze::akcja();
 	}
+}
+
+bool Zolw::czyOdbilAtak(int silaAtakujacego)
+{
+	if (silaAtakujacego < 5 ) return true;
+	else return false;
 }
 
 Zolw::~Zolw()

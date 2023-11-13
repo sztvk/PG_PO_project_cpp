@@ -3,10 +3,12 @@
 class Mlecz : public Roslina
 {
 public:
-	Mlecz();
-	Mlecz(int pozycjaX, int pozycjaY);
+	Mlecz(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
 
+	Roslina* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
 	std::string getNazwa() override;
+
+	void akcja() override;
 
 	~Mlecz();
 };

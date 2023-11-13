@@ -3,9 +3,9 @@
 class Wilk : public Zwierze
 {
 public:
-	Wilk();
-	Wilk(int pozycjaX, int pozycjaY);
+	Wilk(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
 
+	Zwierze* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
 	std::string getNazwa() override;
 
 	~Wilk();

@@ -1,11 +1,12 @@
 #include "Lis.h"
 
-Lis::Lis()
+Lis::Lis(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) : Zwierze(obecnySwiat, 3, 7, pozycjaX, pozycjaY, 'L')
 {
 }
 
-Lis::Lis(int pozycjaX, int pozycjaY) : Zwierze(3, 7, pozycjaX, pozycjaY, 'L')
+Zwierze* Lis::zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY)
 {
+	return new Lis(obecnySwiat, pozycjaX, pozycjaY);
 }
 
 std::string Lis::getNazwa()
@@ -26,24 +27,18 @@ void Lis::akcja()
 	int nowaPozycjaX = pozycjaX + zmianaX;
 	int nowaPozycjaY = pozycjaY + zmianaY;
 
-	Swiat* swiat = getSwiat();
+	Swiat& swiat = getSwiat();
 
-	if (nowaPozycjaX >= 0 && nowaPozycjaX < swiat->getSzerokosc())
+	if (nowaPozycjaX >= 0 && nowaPozycjaX < swiat.getSzerokosc())
 	{
-		if (nowaPozycjaY >= 0 && nowaPozycjaY < swiat->getWysokosc())
+		if (nowaPozycjaY >= 0 && nowaPozycjaY < swiat.getWysokosc())
 		{
-			if (swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY] == nullptr)
+			if (swiat.getPolaNaPlanszy()[nowaPozycjaX][nowaPozycjaY] != nullptr)
 			{
-				swiat->przeniesOrganizm(this, pozycjaX, pozycjaY, nowaPozycjaX, nowaPozycjaY);
+				if (swiat.getPolaNaPlanszy()[nowaPozycjaX][nowaPozycjaY]->getSila() >= getSila()) return;
 			}
-			else if (swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]->getSila() < getSila())
-			{
-				kolizja(swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]);
-			}
-			else if (swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]->getSila() >= getSila())
-			{
-				akcja();
-			}
+			setPoprzedniePolozenie(getPolozenie()[0], getPolozenie()[1]);
+			setPolozenie(nowaPozycjaX, nowaPozycjaY);
 		}
 	}
 }

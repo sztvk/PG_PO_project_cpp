@@ -3,9 +3,9 @@
 class Trawa : public Roslina
 {
 public:
-	Trawa();
-	Trawa(int pozycjaX, int pozycjaY);
+	Trawa(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
 
+	Roslina* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
 	std::string getNazwa() override;
 
 	~Trawa();

@@ -10,6 +10,8 @@
 C:\Users\sztvk\Desktop\infa2022\OOP-project1-cpp\PO_projekt1\PO_projekt1.cpp(6,25): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
   Roslina.cpp
   Swiat.cpp
+C:\Users\sztvk\Desktop\infa2022\OOP-project1-cpp\PO_projekt1\Swiat.cpp(466,67): warning C4267: "inicjowanie": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Users\sztvk\Desktop\infa2022\OOP-project1-cpp\PO_projekt1\Swiat.cpp(500,63): warning C4267: "=": konwersja z "size_t" do "int", możliwa utrata danych
   Trawa.cpp
   WilczeJagody.cpp
   Wilk.cpp

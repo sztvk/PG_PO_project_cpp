@@ -3,9 +3,9 @@
 class Lis : public Zwierze
 {
 public:
-	Lis();
-	Lis(int pozycjaX, int pozycjaY);
+	Lis(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
 
+	Zwierze* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
 	std::string getNazwa() override;
 
 	void akcja() override;

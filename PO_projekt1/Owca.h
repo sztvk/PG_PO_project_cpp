@@ -3,9 +3,9 @@
 class Owca : public Zwierze
 {
 public:
-	Owca();
-	Owca(int pozycjaX, int pozycjaY);
+	Owca(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
 
+	Zwierze* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
 	std::string getNazwa() override;
 
 	~Owca();

@@ -3,10 +3,12 @@
 class WilczeJagody : public Roslina
 {
 public:
-	WilczeJagody();
-	WilczeJagody(int pozycjaX, int pozycjaY);
+	WilczeJagody(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
 
+	Roslina* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
 	std::string getNazwa() override;
+
+	void kolizja(Organizm* organizmKolidujacy) override;
 
 	~WilczeJagody();
 };

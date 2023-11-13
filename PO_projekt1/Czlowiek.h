@@ -1,5 +1,8 @@
 #pragma once
+#include <conio.h>
 #include "Zwierze.h"
+
+#define UMIEJETNOSC_SPECJALNA_CZAS_TRWANIA 5 // w rundach
 
 enum KierunekRuchuCzlowieka
 {
@@ -9,16 +12,31 @@ enum KierunekRuchuCzlowieka
 class Czlowiek : public Zwierze
 {
 private:
+	int ileZostaloUmiejetnosciSpecjalnej;
+	bool tarczaAlzuraAktywowana;
 	KierunekRuchuCzlowieka ostatniRuch;
-public:
-	Czlowiek();
-	Czlowiek(int pozycjaX, int pozycjaY);
 
+	bool umiejetnoscSpecjalna(Organizm* organizmDoOdstraszenia) override;
+	void ustalRuch(int* input);
+
+public:
+	Czlowiek(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
+
+	Zwierze* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
+	
 	std::string getNazwa() override;
+	int getIleZostaloUmiejetnosciSpecjalnej() const;
+	
+	void setIleZostaloUmiejetnosciSpecjalnej(int ileZostalo);
+	void setKierunekRuchu(KierunekRuchuCzlowieka nowyKierunekRuchu);
+	
+	bool czyLosowyRuch() override;
+	
+	void uruchomUmiejetnoscSpecjalna();
+	void zmienLicznikiUmiejetnosciSpecjalnej();
 
 	void akcja() override;
-	void setKierunekRuchu(KierunekRuchuCzlowieka nowyKierunekRuchu);
-
+	
 	~Czlowiek();
 };
 

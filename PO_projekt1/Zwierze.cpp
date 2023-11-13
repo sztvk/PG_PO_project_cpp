@@ -1,10 +1,6 @@
 #include "Zwierze.h"
 
-Zwierze::Zwierze()
-{
-}
-
-Zwierze::Zwierze(int sila, int inicjatywa, int pozycjaX, int pozycjaY, char reprezentacjaZnakowa) : Organizm(sila, inicjatywa, pozycjaX, pozycjaY, reprezentacjaZnakowa)
+Zwierze::Zwierze(Swiat& obecnySwiat, int sila, int inicjatywa, int pozycjaX, int pozycjaY, char reprezentacjaZnakowa) : Organizm(obecnySwiat, sila, inicjatywa, pozycjaX, pozycjaY, reprezentacjaZnakowa)
 {
 
 }
@@ -22,43 +18,57 @@ void Zwierze::akcja()
 	int nowaPozycjaX = pozycjaX + zmianaX;
 	int nowaPozycjaY = pozycjaY + zmianaY;
 
-	Swiat* swiat = getSwiat();
+	Swiat& swiat = getSwiat();
 
-	if (nowaPozycjaX >= 0 && nowaPozycjaX < swiat->getSzerokosc())
+	if (nowaPozycjaX >= 0 && nowaPozycjaX < swiat.getSzerokosc())
 	{
-		if (nowaPozycjaY >= 0 && nowaPozycjaY < swiat->getWysokosc())
+		if (nowaPozycjaY >= 0 && nowaPozycjaY < swiat.getWysokosc())
 		{
-			if (swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY] == nullptr)
-			{
-				swiat->przeniesOrganizm(this, pozycjaX, pozycjaY, nowaPozycjaX, nowaPozycjaY);
-			}
-			else if(nowaPozycjaX != pozycjaX && nowaPozycjaY != pozycjaY)
-			{
-				kolizja(swiat->polaNaPlanszy[nowaPozycjaX][nowaPozycjaY]);
-			}
+			setPoprzedniePolozenie(getPolozenie()[0], getPolozenie()[1]);
+			setPolozenie(nowaPozycjaX, nowaPozycjaY);
 		}
 	}
 }
 
 void Zwierze::kolizja(Organizm* organizmAtakowany)
 {
-	Swiat* swiat = getSwiat();
+	Swiat& swiat = getSwiat();
+	if (!swiat.porownajPolozenie(this->getPolozenie(), organizmAtakowany->getPolozenie())) return;
 
-	int organizmAtakowanyX = organizmAtakowany->getPolozenie()[0];
-	int organizmAtakowanyY = organizmAtakowany->getPolozenie()[1];
-	int organizmAtakujacyX = getPolozenie()[0];
-	int organizmAtakujacyY = getPolozenie()[1];
-
-	if (getSila() >= organizmAtakowany->getSila())
-	{	
-		swiat->usunOrganizm(organizmAtakowany);
-		if(dynamic_cast<Zwierze*>(this)) swiat->przeniesOrganizm(this, organizmAtakujacyX, organizmAtakujacyY, organizmAtakowanyX, organizmAtakowanyY);
-	}
-	else if (getSila() < organizmAtakowany->getSila())
+	if (dynamic_cast<Zwierze*>(organizmAtakowany))
 	{
-		swiat->usunOrganizm(this);
-		if (dynamic_cast<Zwierze*>(organizmAtakowany)) swiat->przeniesOrganizm(organizmAtakowany, organizmAtakowanyX, organizmAtakowanyY, organizmAtakujacyX, organizmAtakujacyY);
+		if (getReprezentacjaZnakowa() == organizmAtakowany->getReprezentacjaZnakowa()) // to samo zwierze
+		{
+			rozmnozSie(dynamic_cast<Zwierze*>(organizmAtakowany));
+		}
+		else // pojedynek
+		{
+			walczZOrganizmem(organizmAtakowany);
+		}
 	}
+}
+
+void Zwierze::rozmnozSie(Zwierze* zwierzeKolidujace)
+{
+	Swiat& swiat = getSwiat();
+	setPolozenie(getPoprzedniePolozenie()[0], getPoprzedniePolozenie()[1]);
+
+	if (swiat.getOrganizmy().size() == swiat.getSzerokosc() * swiat.getWysokosc()) return;
+
+	std::vector<std::pair<int, int>> wolnePolaWokolOrganizm1 = zwrocWolnePolaWokolOrganizmu();
+	std::vector<std::pair<int, int>> wolnePolaWokolOrganizm2 = zwierzeKolidujace->zwrocWolnePolaWokolOrganizmu();
+	if (wolnePolaWokolOrganizm1.empty() && wolnePolaWokolOrganizm2.empty()) return;
+
+	if (wolnePolaWokolOrganizm1.size() >= wolnePolaWokolOrganizm2.size())dodajNowourodzoneZwierze(wolnePolaWokolOrganizm1, swiat);
+	else dodajNowourodzoneZwierze(wolnePolaWokolOrganizm2, swiat);
+}
+
+void Zwierze::dodajNowourodzoneZwierze(std::vector<std::pair<int, int>> miejscaNaPorod, Swiat& swiat)
+{
+	int wylosowanePole = rand() % miejscaNaPorod.size();
+
+	swiat.getOrganizmy().push_back(zwrocNowyOrganizmTegoTypu(swiat, miejscaNaPorod[wylosowanePole].first, miejscaNaPorod[wylosowanePole].second));
+	reagujNaRozmnazanie();
 }
 
 void Zwierze::wylosujPozycje(int* zmianaX, int* zmianaY)
@@ -68,6 +78,24 @@ void Zwierze::wylosujPozycje(int* zmianaX, int* zmianaY)
 		*zmianaX = std::rand() % 3 - 1;
 		*zmianaY = std::rand() % 3 - 1;
 	} while (*zmianaX == 0 && *zmianaY == 0);
+}
+
+void Zwierze::reagujNaZabicie(Organizm* organizmZabity)
+{
+	std::string noweZdarzenie = "Zwierze gatunku: " + getNazwa() + " zabilo zwierze gatunku: " + organizmZabity->getNazwa();
+	getSwiat().getZdarzenia().push_back(noweZdarzenie);
+}
+
+void Zwierze::reagujNaSmierc(Organizm* organizmKolidujacy)
+{
+	std::string noweZdarzenie = "Zwierze gatunku: " + getNazwa() + " zostaje zabite przez zwierze gatunku: " + organizmKolidujacy->getNazwa();
+	getSwiat().getZdarzenia().push_back(noweZdarzenie);
+}
+
+void Zwierze::reagujNaRozmnazanie()
+{
+	std::string noweZdarzenie = "Zwierze gatunku: " + getNazwa() + " rozmnozylo sie!";
+	getSwiat().getZdarzenia().push_back(noweZdarzenie);
 }
 
 Zwierze::~Zwierze()

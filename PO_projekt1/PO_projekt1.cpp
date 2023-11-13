@@ -1,18 +1,19 @@
-﻿// tu bylo iostream
+﻿#include <conio.h>
 #include "Swiat.h"
 
 int main()
 {
     std::srand(std::time(nullptr));
+
     std::cout << "Programowanie obiektowe - projekt 1 - Anna Sztukowska 188803\n";
     int wysokoscPlanszy, szerokoscPlanszy;
     std::cin >> wysokoscPlanszy >> szerokoscPlanszy;
+    
     Swiat nowySwiat(szerokoscPlanszy, wysokoscPlanszy);
 
-    nowySwiat.dodajPoczatkoweOrganizmy();
-    nowySwiat.rysujSwiat();
-
     nowySwiat.przebiegGry();
+
+    nowySwiat.wyczyscSwiat();
 
     return 0;
 }

@@ -3,10 +3,12 @@
 class Guarana : public Roslina
 {
 public:
-	Guarana();
-	Guarana(int pozycjaX, int pozycjaY);
+	Guarana(Swiat& obecnySwiat, int pozycjaX, int pozycjaY);
 
+	Roslina* zwrocNowyOrganizmTegoTypu(Swiat& obecnySwiat, int pozycjaX, int pozycjaY) override;
 	std::string getNazwa() override;
+
+	void kolizja(Organizm* organizmKolidujacy) override;
 
 	~Guarana();
 };
